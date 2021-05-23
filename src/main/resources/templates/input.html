@@ -3,11 +3,75 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Sample</title>
+    <title>input</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        function sendreq() {
+            var lines = $("#checkid").val().split(/\r\n|\r|\n/);
+            var json = {name:"grapy",week:[]};
+            var test = json.valuecnt
+            for (var i = 0; i < lines.length; i++) {
+                var tmp = lines[i].split(/ |\t/);
+                var tmp_value = {index:tmp[0], value:tmp[1]};
+                json.week.push(tmp_value);
+            }
+            console.log(JSON.stringify(json))
+
+            // $.ajax({
+            // url: "http://localhost:8080/createImage",
+            // type: "POST",
+            // data: JSON.stringify(json),
+            // dataType: "binary",
+            // responseType:'arraybuffer',
+            // success: function (result) { console.log(result);},
+            // failure: function () {}
+            // });
+
+
+            var oReq = new XMLHttpRequest();
+            oReq.open("POST", "http://localhost:8080/createImage", true);
+            oReq.responseType = "arraybuffer";
+            oReq.setRequestHeader("Content-Type", "application/json");
+            oReq.onload = function (oEvent) {
+                var arrayBuffer = oReq.response;
+                if (arrayBuffer) {
+                    var byteArray = new Uint8Array(arrayBuffer);
+                    var binaryData = "";
+                    for (var i = 0; i < byteArray.byteLength; i++) {
+                        binaryData += String.fromCharCode(byteArray[i]);
+                    }
+                    var img = document.getElementById("targetid");
+                    img.src = "data:image/png;base64," + window.btoa(binaryData);
+                }
+            };
+            oReq.send(JSON.stringify(json));
+
+
+            // var xhr = new XMLHttpRequest();
+            // xhr.open("POST", "http://localhost:8080/createImage", true);
+            // xhr.setRequestHeader("Content-Type", "application/json");
+            // xhr.onreadystatechange = function() {
+            //     var img = document.getElementById("targetid");
+            //     console.log(this.response);
+            //     img.src = URL.createObjectURL(this.response);
+            // };
+            // xhr.onerror = (e) => {
+            //     console.log(xhr.status);
+            //     console.log("error!");
+            // };
+            // xhr.responseType = 'arraybuffer';
+            // xhr.send(JSON.stringify(json));
+        }
+      </script>
 </head>
-
 <body>
-    <h1>HelloWorld</h1>
-</body>
-
+    <h1>input</h1>
+    <form action="/createImage" method="post">
+        <textarea id="checkid" name="data" rows="30" cols="40" placeholder="グラフ描画したいデータを入れる"></textarea><br>
+        <input type="button" value="送信" onmouseup="sendreq()"><br/>
+        <input type="reset" value="リセット">
+    </form>
+    <img id="targetid" src="" />
+    <div id="p1"></div>
+    <div id="p2"></div>
 </html>
