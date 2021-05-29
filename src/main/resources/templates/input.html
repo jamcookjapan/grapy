@@ -16,18 +16,6 @@
                 json.week.push(tmp_value);
             }
             console.log(JSON.stringify(json))
-
-            // $.ajax({
-            // url: "http://localhost:8080/createImage",
-            // type: "POST",
-            // data: JSON.stringify(json),
-            // dataType: "binary",
-            // responseType:'arraybuffer',
-            // success: function (result) { console.log(result);},
-            // failure: function () {}
-            // });
-
-
             var oReq = new XMLHttpRequest();
             oReq.open("POST", "http://localhost:8080/createImage", true);
             oReq.responseType = "arraybuffer";
@@ -45,22 +33,6 @@
                 }
             };
             oReq.send(JSON.stringify(json));
-
-
-            // var xhr = new XMLHttpRequest();
-            // xhr.open("POST", "http://localhost:8080/createImage", true);
-            // xhr.setRequestHeader("Content-Type", "application/json");
-            // xhr.onreadystatechange = function() {
-            //     var img = document.getElementById("targetid");
-            //     console.log(this.response);
-            //     img.src = URL.createObjectURL(this.response);
-            // };
-            // xhr.onerror = (e) => {
-            //     console.log(xhr.status);
-            //     console.log("error!");
-            // };
-            // xhr.responseType = 'arraybuffer';
-            // xhr.send(JSON.stringify(json));
         }
       </script>
 </head>
