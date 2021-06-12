@@ -12,12 +12,12 @@
             var test = json.valuecnt
             for (var i = 0; i < lines.length; i++) {
                 var tmp = lines[i].split(/ |\t/);
-                var tmp_value = {index:tmp[0], value:tmp[1]};
+                var tmp_value = {index:tmp[0], value:tmp[1], target:tmp[2]};
                 json.week.push(tmp_value);
             }
             console.log(JSON.stringify(json))
             var oReq = new XMLHttpRequest();
-            oReq.open("POST", "http://localhost:8080/createImage", true);
+            oReq.open("POST", "/createImage", true);
             oReq.responseType = "arraybuffer";
             oReq.setRequestHeader("Content-Type", "application/json");
             oReq.onload = function (oEvent) {
